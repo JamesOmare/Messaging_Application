@@ -149,7 +149,7 @@ public class StartUserResponse {
 
    @Override
    public String toString() {
-      return "ServiceRegistrationResponse{" +
+      return "SserviceRegistrationResponse{" +
               "age=" + age +
               ", county='" + county + '\'' +
               ", description='" + description + '\'' +

@@ -31,9 +31,9 @@
                 <TextView
                     android:id="@+id/textview_display"
                     android:layout_width="350dp"
-                    android:layout_height="130dp"
+                    android:layout_height="170dp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="0dp"
                     android:layout_marginBottom="-40dp"
                     android:background="#e9f5db"
                     android:text=""
@@ -53,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="30dp"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="10dp"
                         android:layout_marginEnd="30dp">
 
                         <com.google.android.material.textfield.TextInputLayout

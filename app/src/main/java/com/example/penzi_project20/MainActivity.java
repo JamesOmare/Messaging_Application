@@ -47,38 +47,48 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
                 }
 
-                else if(TextUtils.equals(msg.getText().toString(), "penzi")) {
+                else if(sender_no.getText().toString().length() != 10)
+                {
+                    String message = "Invalid number entered, check again and retry";
+                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
 
-                    ActicationRequest acticationRequest = new ActicationRequest();
-                    acticationRequest.setSender_number(sender_no.getText().toString());
-                    acticationRequest.setMessage(msg.getText().toString());
-                    acticationRequest.setShortcode(Integer.valueOf(short_code.getText().toString()));
-                    acticateUser(acticationRequest);
+                }
+                else if(!short_code.getText().toString().equals("5501"))
+                {
+                    String message = "Wrong shortcode entered. Please retry!";
+                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
+                }
+
+                else if(TextUtils.equals(msg.getText().toString().toLowerCase(), "penzi")) {
+
+                    post_method();
+                    textView.setText("Welcome to our dating service with 6000 potential dating partners! To register " +
+                            "sms start#name#age#gender#county#town to 5001 e.g start#mike#25#male#mombasa#changamwe");
+
+
+//                    ActicationRequest acticationRequest = new ActicationRequest();
+//                    acticationRequest.setSender_number(phone_number);
+//                    acticationRequest.setMessage(msg.getText().toString());
+//                    acticationRequest.setShortcode(Integer.valueOf(short_code.getText().toString()));
+//                    acticateUser(acticationRequest);
                 }
 
                 else
                     {
-                        String number = msg.getText().toString();
-                        startUser(number);
+                        while (true)
+                        {
 
-//                    StartUserResponse startUserResponse = new StartUserResponse();
-//                    startUserResponse.getAge().toString();
-//                    startUserResponse.getCounty().toString();
-//                    startUserResponse.getDescription().toString();
-//                    startUserResponse.getEducation_level().toString();
-//                    startUserResponse.getGender().toString();
-//                    startUserResponse.getId().toString();
-//                    startUserResponse.getMarital_status().toString();
-//                    startUserResponse.getMatched_by().toString();
-//                    startUserResponse.getName().toString();
-//                    startUserResponse.getNumber().toString();
-//                    startUserResponse.getProfession().toString();
-//                    startUserResponse.getReligion().toString();
-//                    startUserResponse.getStatus().toString();
-//                    startUserResponse.getTime_of_registry().toString();
-//                    startUserResponse.getTown().toString();
-//                    startUserResponse.getTribe().toString();
-//                    startUser(startUserResponse);
+                            if(TextUtils.equals(msg.getText().toString().toLowerCase().substring(0, 5), "start"))
+                            {
+                                post_method();
+
+                                break;
+
+                            }
+
+                        }
+
+
 
 
 
@@ -134,6 +144,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("success", response.body().toString());
                     textView.setText(response.body().toString());
                 }
+                else
+                {
+                    String message = "An error occurred please try again later ...";
+                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -144,6 +159,76 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void post_method(){
+
+        String sender_number = sender_no.getText().toString();
+        String replacement = "+254";
+        String regexTarget = "0";
+        String phone_number = sender_number.replaceFirst(regexTarget, replacement);
+        Post_Incoming_Message_Request post_incoming_message_request = new Post_Incoming_Message_Request();
+        post_incoming_message_request.setSender_number(phone_number);
+        post_incoming_message_request.setMessage(msg.getText().toString());
+        post_incoming_message_request.setShortcode(Integer.valueOf(short_code.getText().toString()));
+        Post_Incoming_Message(post_incoming_message_request);
+
+    }
+
+    public void incomingMessageFetch(){
+        Call<String> get_incoming_message = ApiClient.getUserService().incomingMessageFetch();
+        get_incoming_message.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.e("Response", response.body().toString());
+                if(response.isSuccessful()){
+                    Log.e("success", response.body().toString());
+                    String user_message = response.body().toString();
+                    textView.setText(response.body().toString());
+                }
+                else {
+
+                    String message = "An error occurred please try again later ...";
+                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+                Log.e( "Failure.", t.getLocalizedMessage());
+
+            }
+        });
+    }
+
+    public void Post_Incoming_Message(Post_Incoming_Message_Request post_incoming_message_request){
+        Call<Post_Incoming_Message_Response> post_incoming_message_responseCall = ApiClient.getUserService().Post_Incoming_Message(post_incoming_message_request);
+        post_incoming_message_responseCall.enqueue(new Callback<Post_Incoming_Message_Response>() {
+            @Override
+            public void onResponse(Call<Post_Incoming_Message_Response> call, Response<Post_Incoming_Message_Response> response) {
+                if(response.isSuccessful()){
+
+                    Log.e("success", response.body().toString());
+                    String message = "Successful ...";
+                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
+
+                }
+                else
+                {
+                    String message = "An error occurred please try again later ...";
+                    Toast.makeText(MainActivity.this,message,Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Post_Incoming_Message_Response> call, Throwable t) {
+
+                Log.e( "Failure.", t.getLocalizedMessage());
+
+            }
+        });
     }
 
 }
