@@ -13,11 +13,12 @@ public class ApiClient {
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build();
-
+     //   http://127.0.0.1:8000/
+        // https://penzi-api.herokuapp.com/
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://penzi-api.herokuapp.com/")
+                .baseUrl("http://10.0.2.2:8000/")
                 .client(okHttpClient)
                 .build();
 
