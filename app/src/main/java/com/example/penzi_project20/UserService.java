@@ -2,6 +2,8 @@ package com.example.penzi_project20;
 
 
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -37,6 +39,14 @@ public interface UserService {
     @GET("fetch_incoming_messages_sender")
     Call<Fetch_Incoming_message_Sender> incomingMessage_SenderFetch();
 
+    @GET("get_gender/{number}")
+    Call<String> GetGender(@Path("number") String number);
+
+    @GET("search_query/{age1}/{age2}/{county}/{gender}")
+    Call<List<MatchUserResponse>> MatchUser(@Path("age1") int age1, @Path("age2") int age2, @Path("county") String county, @Path("gender") String gender);
+
+    @GET("search_number_of_genders_matched/{age1}/{age2}/{county}/{gender}")
+    Call<String> UserNo(@Path("age1") int age1, @Path("age2") int age2, @Path("county") String county, @Path("gender") String gender);
 
 
 }

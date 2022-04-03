@@ -18,7 +18,7 @@ public class ApiClient {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://10.0.2.2:8000/")
+                .baseUrl("https://penzi-api.herokuapp.com/")
                 .client(okHttpClient)
                 .build();
 
